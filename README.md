@@ -1,27 +1,114 @@
-# AppCibertec
+# 🎓 Sistema de Gestión Académica
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
+Este proyecto es un sistema completo de gestión académica, compuesto por un **backend en Spring Boot** y un **frontend en Angular**. Permite la administración de alumnos, profesores, cursos, salones e inscripciones. Además, incluye seguridad con JWT, filtros personalizados y exportación de datos a Excel.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 📚 Backend - Spring Boot + MySQL
 
-## Code scaffolding
+### 🧱 Entidades principales
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Alumno**: Registro de datos personales del estudiante.
+- **Profesor**: Información sobre los docentes.
+- **Curso**: Cursos académicos ofertados.
+- **Salón**: Aulas o espacios asignados.
+- **Inscripción**: Asignación de alumnos a cursos.
 
-## Build
+### 📋 Listas auxiliares
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Entidades referenciales utilizadas en formularios desplegables:
 
-## Running unit tests
+- **Estado**: Activo, Inactivo, etc.
+- **Género**: Masculino, Femenino, Otro.
+- **Tipo de Salón**: Aula común, Laboratorio, etc.
+- **Distrito**: Ubicación geográfica.
+- **País**: Nacionalidades.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+### 🔐 Seguridad
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Autenticación basada en **JWT (JSON Web Token)**.
+- Filtros personalizados:
+  - `JWTAuthenticationFilter`
+  - `JWTAuthorizationFilter`
+- Configuración de **CORS** para permitir peticiones desde `http://localhost:4200`.
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### 📡 Endpoints principales
+
+| Método | Endpoint                  | Descripción                      |
+|--------|---------------------------|----------------------------------|
+| GET    | /api/alumno/lista         | Lista todos los alumnos          |
+| POST   | /api/alumno/crear         | Crea un nuevo alumno             |
+| PUT    | /api/alumno/editar/{id}   | Edita un alumno existente        |
+| GET    | /api/profesor/lista       | Lista todos los profesores       |
+| POST   | /api/inscripcion/crear    | Registra una nueva inscripción   |
+| GET    | /api/curso/lista          | Lista todos los cursos           |
+| GET    | /api/salon/lista          | Lista todos los salones          |
+
+---
+
+### 🚀 Tecnologías backend
+
+- Java 17+
+- Spring Boot
+- Spring Data JPA
+- Spring Security (JWT)
+- Maven
+- MySQL
+
+---
+
+## 🖥️ Frontend - Angular
+
+### 🧩 Módulos y Componentes
+
+- **Login** con autenticación vía token.
+- **AuthGuard**: Protección de rutas según sesión.
+- **Interceptors**: Inserta token en cada petición.
+- **Componentes**: Alumnos, Profesores, Cursos, Salones, Inscripciones.
+- **Exportación a Excel** usando ExcelJS.
+
+### 🛠️ Funcionalidades
+
+- Formulario reactivo para inscripciones.
+- Filtros por alumno, curso, ciclo y profesor.
+- Registro, edición y listado de inscripciones.
+- Exportar inscripciones filtradas a **Excel**.
+- Sidebar dinámico con enlaces a los módulos.
+- Modal con Bootstrap para CRUD.
+
+---
+
+### 🛡️ Seguridad frontend
+
+- Se almacena el token JWT en `localStorage`.
+- Se valida el token antes de acceder a las rutas protegidas.
+- Si no hay sesión, se redirige al login automáticamente.
+
+---
+
+### 📦 Tecnologías frontend
+
+- Angular
+- Bootstrap 5
+- SweetAlert2
+- ExcelJS
+- FileSaver.js
+- TypeScript
+- RxJS
+
+---
+
+## 🔧 Cómo ejecutar localmente
+
+### 📌 Backend
+
+```bash
+# Ir a la carpeta del backend
+cd backend-gestion-inscripciones
+
+# Ejecutar la app
+./mvnw spring-boot:run
