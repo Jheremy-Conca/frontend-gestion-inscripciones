@@ -1,0 +1,113 @@
+/* Fondo general */
+#login-background {
+  height: 100vh;
+  background-color: #b3ecff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tarjeta de login */
+.user_card {
+  background-color: #f39c12;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: center;
+}
+
+/* Logo */
+.brand_logo_container {
+  margin-bottom: 20px;
+}
+
+.brand_logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+/* Formulario */
+.form_container {
+  margin-top: 20px;
+}
+
+.input_group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: white;
+}
+
+.input_icon {
+  margin-right: 10px;
+  color: #333;
+}
+
+.input_user,
+.input_pass {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  height: 40px;
+  background-color: transparent;
+}
+
+/* Botón */
+.login_container {
+  margin-top: 20px;
+}
+
+.login_btn {
+  background-color: #d22f19;
+  color: white;
+  font-weight: bold;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.login_btn:hover {
+  background-color: #ff2306;
+}
+
+/* Enlace */
+.link_container {
+  margin-top: 20px;
+}
+
+/* Alerta solo con Bootstrap */
+.alert {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.text-danger {
+  color: red;
+  font-size: 0.85rem;
+  text-align: left;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+
+.input_group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.input_group input {
+  flex: 1;
+}
+
+.input_icon {
+  color: #555;
+}

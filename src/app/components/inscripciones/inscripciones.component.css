@@ -1,0 +1,311 @@
+/* Estructura */
+#wrapper {
+  display: flex;
+}
+
+#wrapper.toggled .sidebar {
+  margin-left: -250px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #1178ec;
+  color: white;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.sidebar-brand-icon {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: white;
+}
+
+.sidebar-brand-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.sidebar .nav-item {
+  list-style: none;
+  margin: 10px 0;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+.sidebar .nav-link i {
+  margin-right: 10px;
+}
+
+.sidebar-heading {
+  font-size: 1rem;
+  margin: 10px 20px;
+}
+
+/* Collapse */
+.collapse-inner {
+  padding-left: 20px;
+}
+
+.collapse-item {
+  display: block;
+  color: #333;
+  text-decoration: none;
+  margin: 5px 0;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.collapse-item:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Toggle button (sidebar) */
+.sidebar-toggle {
+  text-align: center;
+  margin-top: auto;
+}
+
+.sidebar-toggle button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+}
+
+/* Posiciona el botón toggle al centro del sidebar */
+.btn-toggle {
+  position: absolute;
+  top: 50%;
+  left: 250px;
+  transform: translateY(-50%);
+  background: rgb(70, 143, 238);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Cuando sidebar está oculto, mueve el botón a la izquierda */
+#wrapper.toggled .btn-toggle {
+  left: 0;
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+/* Íconos blancos por defecto */
+.sidebar i,
+.sidebar .nav-link span {
+  color: white;
+}
+
+/* Elementos de colapsado más estilizados */
+.collapse-inner {
+  background: #fff;
+  border-radius: 5px;
+  margin: 5px 20px 10px;
+  padding: 10px;
+}
+
+.collapse-item {
+  color: #333;
+  background-color: #f5f5f5;
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+}
+
+.collapse-item:hover {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+/* Íconos dentro del collapse */
+.collapse-item i {
+  margin-right: 8px;
+}
+
+
+/* Topbar */
+.topbar {
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+}
+
+.search-form {
+  display: flex;
+  gap: 5px;
+}
+
+.search-form input {
+  padding: 5px 10px;
+}
+
+.search-form button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+
+.nav-right {
+  margin-left: auto;
+}
+
+.logout {
+  text-decoration: none;
+  color: #4a90e2;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Main content */
+#content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  padding: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-content h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #4a90e2;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.columns .card {
+  flex: 1;
+}
+
+/* Footer */
+footer {
+  background: #ffffff;
+  text-align: center;
+  padding: 15px 0;
+  border-top: 1px solid #ccc;
+}
+
+/* Contenedor del listado */
+.listado-alumnos {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+/* Título del listado */
+.listado-alumnos h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1178ec;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botones de acción arriba a la derecha */
+.listado-alumnos .action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Estilo general de la tabla */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Encabezado de la tabla */
+.table thead th {
+  background-color: #f1f5f9;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Celdas */
+.table td,
+.table th {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.92rem;
+  padding: 0.75rem;
+}
+
+/* Hover en fila */
+.table-hover tbody tr:hover {
+  background-color: #eef6ff;
+  transition: background-color 0.3s ease;
+}
+
+/* Botón de editar */
+.table .btn-success {
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Responsive de la tabla */
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 15px;
+}

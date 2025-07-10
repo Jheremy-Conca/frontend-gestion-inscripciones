@@ -1,0 +1,100 @@
+<!-- Page Wrapper -->
+<div id="wrapper" [ngClass]="{ 'toggled': !sidebarVisible }">
+  <!-- Sidebar -->
+  <ul id="accordionSidebar" class="sidebar">
+    <a class="sidebar-brand" routerLink="/home">
+      <div class="sidebar-brand-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+      <div class="sidebar-brand-text">Fe y Alegría</div>
+    </a>
+
+    <hr />
+    <li class="nav-item active">
+      <a class="nav-link" routerLink="/home">
+        <i class="fa-brands fa-windows"></i>
+        <span>Gestión Académica</span>
+      </a>
+    </li>
+
+    <hr />
+    <div class="sidebar-heading">Gestión Académica</div>
+
+    <li *ngFor="let item of menuItems" class="nav-item">
+      <a class="nav-link collapsed" (click)="item.expanded = !item.expanded" [attr.aria-expanded]="item.expanded"
+        [attr.aria-controls]="item.id">
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+      <div [id]="item.id" class="collapse" [ngClass]="{ 'show': item.expanded }">
+        <div class="collapse-inner">
+          <a *ngFor="let sub of item.children" class="collapse-item" [routerLink]="sub.link">
+            {{ sub.label }}
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <hr />
+
+  </ul>
+
+  <!-- Botón para mostrar/ocultar el sidebar -->
+  <button class="btn-toggle" (click)="toggleSidebar()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+
+  <!-- Content -->
+  <div id="content-wrapper">
+    <nav class="topbar">
+
+
+      <div class="search-form">
+        <input type="text" placeholder="Buscar..." />
+        <button>
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <div class="nav-right">
+        <a class="logout" (click)="logout()">Cerrar Sesión</a>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <h1>Bienvenido a Fe y Alegría</h1>
+      <p>En Fe y Alegría nos dedicamos a ofrecer educación de calidad y formación integral...</p>
+
+      <section class="card">
+        <h2>Noticias Recientes</h2>
+        <p>¡Únete a nuestra campaña para recolectar útiles escolares!</p>
+      </section>
+
+      <section class="card">
+        <h2>Próximos Eventos</h2>
+        <ul>
+          <li><strong>30 de junio:</strong> Jornada de Voluntariado Estudiantil.</li>
+          <li><strong>10 de julio:</strong> Feria Cultural "Conoce tu País".</li>
+        </ul>
+      </section>
+
+      <div class="columns">
+        <div class="card">
+          <h2>Ubicación</h2>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.9041477177!2d-76.84057962531!3d-11.981134040681532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c28f53a8f921%3A0xd1b5aa444bbc71b!2sIE%20Fe%20y%20Alegr%C3%ADa%2041!5e0!3m2!1ses!2sve!4v1719198707576!5m2!1ses!2sve"
+            width="100%" height="250" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="card">
+          <h2>Información Adicional</h2>
+          <p>Visítanos para conocer más sobre nuestro programa educativo.</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© Fe y Alegría 2025</p>
+    </footer>
+  </div>
+</div>

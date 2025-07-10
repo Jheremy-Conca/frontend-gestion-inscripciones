@@ -1,0 +1,148 @@
+<div id="wrapper" [ngClass]="{ 'toggled': !sidebarVisible }">
+  <!-- Sidebar -->
+  <ul id="accordionSidebar" class="sidebar">
+    <a class="sidebar-brand" routerLink="/home">
+      <div class="sidebar-brand-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+      <div class="sidebar-brand-text">Fe y Alegría</div>
+    </a>
+
+    <hr />
+    <li class="nav-item active">
+      <a class="nav-link" routerLink="/home">
+        <i class="fa-brands fa-windows"></i>
+        <span>Gestión Académica</span>
+      </a>
+    </li>
+
+    <hr />
+    <div class="sidebar-heading">Gestión Académica</div>
+
+    <li *ngFor="let item of menuItems" class="nav-item">
+      <a class="nav-link collapsed" (click)="item.expanded = !item.expanded" [attr.aria-expanded]="item.expanded"
+        [attr.aria-controls]="item.id">
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+      <div [id]="item.id" class="collapse" [ngClass]="{ 'show': item.expanded }">
+        <div class="collapse-inner">
+          <a *ngFor="let sub of item.children" class="collapse-item" [routerLink]="sub.link">
+            {{ sub.label }}
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <hr />
+  </ul>
+  <!-- Botón para mostrar/ocultar el sidebar -->
+  <button class="btn-toggle" (click)="toggleSidebar()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <!-- Contenido principal -->
+  <div class="container mt-4 listado-alumnos">
+    <!-- Encabezado con búsqueda y botón -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+      <h2 class="text-primary fw-bold m-0">
+        <i class="fa-solid fa-chalkboard me-2"></i>Listado de Salones
+      </h2>
+
+      <div class="d-flex flex-wrap gap-2">
+        <input type="text" class="form-control" placeholder="Buscar por número o piso" [(ngModel)]="filtroNombre"
+          (input)="filtrarSalones()" style="max-width: 250px;" />
+        <button class="btn btn-primary" (click)="titulo('Crear')">
+          <i class="fa-solid fa-plus me-1"></i> Nuevo salón
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabla de salones -->
+    <div class="table-responsive shadow-sm rounded-4 overflow-hidden">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead class="table-light text-center">
+          <tr>
+            <th>#</th>
+            <th>Número</th>
+            <th>Piso</th>
+            <th>Capacidad</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let salon of listaSalones; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ salon.numeroSalon }}</td>
+            <td>{{ salon.piso }}</td>
+            <td>{{ salon.capacidad }}</td>
+            <td>{{ salon.tipoSalon?.descripcionSalon }}</td>
+            <td>{{ salon.estado?.descripcionEstado }}</td>
+            <td>
+              <button class="btn btn-sm btn-success" (click)="titulo('Editar', salon.idSalon)">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="listaSalones.length === 0">
+            <td colspan="7" class="text-center text-muted">No se encontraron salones.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalSalon" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <form [formGroup]="formSalon" (ngSubmit)="crearSalon()">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+            <button type="button" class="btn-close" (click)="cerrarBoton()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input formControlName="numeroSalon" type="text" class="form-control" placeholder="Número">
+                  <label>Número del salón</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="piso" type="number" class="form-control" placeholder="Piso">
+                  <label>Piso</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="capacidad" type="number" class="form-control" placeholder="Capacidad">
+                  <label>Capacidad</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idTipoSalon">
+                    <option value="" disabled selected>Seleccione tipo</option>
+                    <option *ngFor="let t of listaTipos" [value]="t.idTipoSalon">{{ t.descripcionSalon }}</option>
+                  </select>
+                  <label>Tipo de salón</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idEstado">
+                    <option value="" disabled selected>Seleccione estado</option>
+                    <option *ngFor="let e of listaEstados" [value]="e.idEstado">{{ e.descripcionEstado }}</option>
+                  </select>
+                  <label>Estado</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cerrarBoton()">Cerrar</button>
+            <button type="submit" class="btn btn-primary">{{ nameBoton }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,182 @@
+<div id="wrapper" [ngClass]="{ 'toggled': !sidebarVisible }">
+  <!-- Sidebar -->
+  <ul id="accordionSidebar" class="sidebar">
+    <a class="sidebar-brand" routerLink="/home">
+      <div class="sidebar-brand-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+      <div class="sidebar-brand-text">Fe y Alegría</div>
+    </a>
+
+    <hr />
+    <li class="nav-item active">
+      <a class="nav-link" routerLink="/home">
+        <i class="fa-brands fa-windows"></i>
+        <span>Gestión Académica</span>
+      </a>
+    </li>
+
+
+    <hr />
+    <div class="sidebar-heading">Gestión Académica</div>
+
+    <li *ngFor="let item of menuItems" class="nav-item">
+      <a class="nav-link collapsed" (click)="item.expanded = !item.expanded" [attr.aria-expanded]="item.expanded"
+        [attr.aria-controls]="item.id">
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+      <div [id]="item.id" class="collapse" [ngClass]="{ 'show': item.expanded }">
+        <div class="collapse-inner">
+          <a *ngFor="let sub of item.children" class="collapse-item" [routerLink]="sub.link">
+            {{ sub.label }}
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <hr />
+  </ul>
+  <!-- Botón para mostrar/ocultar el sidebar -->
+  <button class="btn-toggle" (click)="toggleSidebar()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <!-- Contenido principal -->
+  <div class="container mt-4 listado-alumnos">
+    <!-- Encabezado con búsqueda y botón -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+      <h2 class="text-primary fw-bold m-0">
+        <i class="fa-solid fa-users me-2"></i>Listado de Alumnos
+      </h2>
+
+      <div class="d-flex flex-wrap gap-2">
+        <input type="text" class="form-control" placeholder="Buscar por nombre o DNI" [(ngModel)]="filtroNombre"
+          (input)="filtrarAlumnos()" style="max-width: 250px;" />
+        <button class="btn btn-primary" (click)="titulo('Crear')">
+          <i class="fa-solid fa-user-plus me-1"></i> Nuevo alumno
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabla de alumnos -->
+    <div class="table-responsive shadow-sm rounded-4 overflow-hidden">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead class="table-light text-center">
+          <tr>
+            <th>#</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>DNI</th>
+            <th>Género</th>
+            <th>País</th>
+            <th>Distrito</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alumno of listaAlumnos; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ alumno.nombres }}</td>
+            <td>{{ alumno.apellidos }}</td>
+            <td>{{ alumno.dni }}</td>
+            <td>{{ alumno.genero?.descripcionGenero }}</td>
+            <td>{{ alumno.pais?.nombrePais }}</td>
+            <td>{{ alumno.distrito?.nombreDistrito }}</td>
+            <td>{{ alumno.telefono }}</td>
+            <td>{{ alumno.correo }}</td>
+            <td>{{ alumno.estado?.descripcionEstado }}</td>
+            <td>
+              <button class="btn btn-sm btn-success" (click)="titulo('Editar', alumno.idAlumno)">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="listaAlumnos.length === 0">
+            <td colspan="11" class="text-center text-muted">No se encontraron alumnos.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalAlumno" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <form [formGroup]="formAlumno" (ngSubmit)="crearAlumno()">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+            <button type="button" class="btn-close" (click)="cerrarBoton()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input formControlName="nombres" type="text" class="form-control" placeholder="Nombres">
+                  <label>Nombres</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="apellidos" type="text" class="form-control" placeholder="Apellidos">
+                  <label>Apellidos</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="dni" type="text" class="form-control" placeholder="DNI">
+                  <label>DNI</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="telefono" type="text" class="form-control" placeholder="Teléfono">
+                  <label>Teléfono</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="correo" type="email" class="form-control" placeholder="Correo">
+                  <label>Correo</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idGenero">
+                    <option value="" disabled selected>Seleccione género</option>
+                    <option *ngFor="let g of listaGeneros" [value]="g.idGenero">{{ g.descripcionGenero }}</option>
+                  </select>
+                  <label>Género</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idPais">
+                    <option value="" disabled selected>Seleccione país</option>
+                    <option *ngFor="let p of listaPaises" [value]="p.idPais">{{ p.nombrePais }}</option>
+                  </select>
+                  <label>País</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idDistrito">
+                    <option value="" disabled selected>Seleccione distrito</option>
+                    <option *ngFor="let d of listaDistritos" [value]="d.idDistrito">{{ d.nombreDistrito }}</option>
+                  </select>
+                  <label>Distrito</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idEstado">
+                    <option value="" disabled selected>Seleccione estado</option>
+                    <option *ngFor="let e of listaEstados" [value]="e.idEstado">{{ e.descripcionEstado }}</option>
+                  </select>
+                  <label>Estado</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cerrarBoton()">Cerrar</button>
+
+            <button type="submit" class="btn btn-primary">{{ nameBoton }}</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

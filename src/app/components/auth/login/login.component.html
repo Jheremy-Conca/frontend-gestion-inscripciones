@@ -1,0 +1,110 @@
+<div id="login-background">
+  <div class="user_card">
+    <div class="brand_logo_container">
+      <img src="https://images.vexels.com/content/166504/preview/square-academic-cap-flat-66b538.png" class="brand_logo"
+        alt="Logo">
+    </div>
+
+    <!-- LOGIN -->
+    <div *ngIf="modo === 'login'" class="form_container">
+      <form [formGroup]="formLogin" (ngSubmit)="login()">
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-envelope"></i></span>
+          <input type="email" formControlName="email" class="input_user" placeholder="Correo">
+        </div>
+
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-key"></i></span>
+          <input [type]="verPasswordLogin ? 'text' : 'password'" formControlName="password" class="input_pass"
+            placeholder="Contraseña">
+          <span class="input_icon" style="cursor: pointer;" (click)="togglePasswordLogin()">
+            <i class="fas" [ngClass]="verPasswordLogin ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </span>
+        </div>
+
+
+        <!-- ALERTA de error (LOGIN) -->
+        <div *ngIf="mensajeError && modo === 'login'" class="alert alert-danger alert-dismissible fade show mt-2"
+          role="alert">
+          {{ mensajeError }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="login_container">
+          <button type="submit" class="login_btn">Iniciar Sesión</button>
+        </div>
+      </form>
+
+      <div class="link_container">
+        ¿No tienes una cuenta?
+        <a (click)="cambiarModo('registro')" style="cursor: pointer;">Registrarse</a>
+      </div>
+    </div>
+
+    <!-- REGISTRO -->
+    <div *ngIf="modo === 'registro'" class="form_container">
+      <form [formGroup]="formRegistro" (ngSubmit)="registrar()">
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-user"></i></span>
+          <input type="text" formControlName="nombre" class="input_user" placeholder="Nombre">
+        </div>
+
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-envelope"></i></span>
+          <input type="email" formControlName="email" class="input_user" placeholder="Correo">
+        </div>
+
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-key"></i></span>
+          <input [type]="verPasswordRegistro ? 'text' : 'password'" formControlName="password" class="input_pass"
+            placeholder="Contraseña">
+          <span class="input_icon" style="cursor: pointer;" (click)="togglePasswordRegistro()">
+            <i class="fas" [ngClass]="verPasswordRegistro ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </span>
+        </div>
+
+
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-key"></i></span>
+          <input [type]="verConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" class="input_pass"
+            placeholder="Confirmar Contraseña">
+          <span class="input_icon" style="cursor: pointer;" (click)="toggleConfirmPassword()">
+            <i class="fas" [ngClass]="verConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </span>
+        </div>
+
+
+        <div class="input_group">
+          <span class="input_icon"><i class="fas fa-user-tag"></i></span>
+          <select formControlName="rol" class="input_user">
+            <option value="Admin">Admin</option>
+            <option value="Estudiante">Estudiante</option>
+          </select>
+        </div>
+
+        <!-- ALERTA de éxito (REGISTRO) -->
+        <div *ngIf="mensajeExito && modo === 'registro'" class="alert alert-success alert-dismissible fade show mt-2"
+          role="alert">
+          {{ mensajeExito }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+
+        <!-- ALERTA de error (REGISTRO) -->
+        <div *ngIf="mensajeError && modo === 'registro'" class="alert alert-danger alert-dismissible fade show mt-2"
+          role="alert">
+          {{ mensajeError }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="login_container">
+          <button type="submit" class="login_btn">Registrarse</button>
+        </div>
+      </form>
+
+      <div class="link_container">
+        ¿Ya tienes una cuenta?
+        <a (click)="cambiarModo('login')" style="cursor: pointer;">Iniciar Sesión</a>
+      </div>
+    </div>
+  </div>
+</div>

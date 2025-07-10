@@ -1,0 +1,182 @@
+<div id="wrapper" [ngClass]="{ 'toggled': !sidebarVisible }">
+  <!-- Sidebar -->
+  <ul id="accordionSidebar" class="sidebar">
+    <a class="sidebar-brand" routerLink="/home">
+      <div class="sidebar-brand-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+      <div class="sidebar-brand-text">Fe y Alegría</div>
+    </a>
+
+    <hr />
+    <li class="nav-item active">
+      <a class="nav-link" routerLink="/home">
+        <i class="fa-brands fa-windows"></i>
+        <span>Gestión Académica</span>
+      </a>
+    </li>
+
+    <hr />
+    <div class="sidebar-heading">Gestión Académica</div>
+
+    <li *ngFor="let item of menuItems" class="nav-item">
+      <a class="nav-link collapsed" (click)="item.expanded = !item.expanded" [attr.aria-expanded]="item.expanded"
+        [attr.aria-controls]="item.id">
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+      <div [id]="item.id" class="collapse" [ngClass]="{ 'show': item.expanded }">
+        <div class="collapse-inner">
+          <a *ngFor="let sub of item.children" class="collapse-item" [routerLink]="sub.link">
+            {{ sub.label }}
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <hr />
+  </ul>
+
+  <button class="btn-toggle" (click)="toggleSidebar()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <!-- Contenido principal -->
+  <div class="container mt-4 listado-inscripciones">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+      <h2 class="text-primary fw-bold m-0">
+        <i class="fa-solid fa-clipboard-check me-2"></i>Listado de Inscripciones
+      </h2>
+
+      <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-primary" (click)="titulo('Crear')">
+            <i class="fa-solid fa-plus me-1"></i> Nueva inscripción
+          </button>
+          <button class="btn btn-success" (click)="exportarExcel()">
+            <i class="fa-solid fa-file-excel me-1"></i> Exportar Excel
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Filtros -->
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Filtrar por alumno" [(ngModel)]="filtroNombreAlumno">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Filtrar por curso" [(ngModel)]="filtroCurso">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Filtrar por ciclo" [(ngModel)]="filtroCiclo">
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Filtrar por profesor" [(ngModel)]="filtroProfesor">
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-responsive shadow-sm rounded-4 overflow-hidden">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead class="table-light text-center">
+          <tr>
+            <th>#</th>
+            <th>Alumno</th>
+            <th>Curso</th>
+            <th>Profesor</th>
+            <th>Salón</th>
+            <th>Ciclo</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inscripcion of inscripcionesFiltradas; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ inscripcion.alumno?.nombres }} {{ inscripcion.alumno?.apellidos }}</td>
+            <td>{{ inscripcion.curso?.nombreCurso }}</td>
+            <td>{{ inscripcion.curso?.profesor?.nombres }} {{ inscripcion.curso?.profesor?.apellidos }}</td>
+            <td>{{ inscripcion.curso?.salon?.numeroSalon }}</td>
+            <td>{{ inscripcion.ciclo }}</td>
+            <td>{{ inscripcion.estado?.descripcionEstado }}</td>
+            <td>{{ inscripcion.fechaInscripcion | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <button class="btn btn-sm btn-success" (click)="titulo('Editar', inscripcion.idInscripcion)">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="listaInscripciones.length === 0">
+            <td colspan="9" class="text-center text-muted">No se encontraron inscripciones.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalInscripcion" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <form [formGroup]="formInscripcion" (ngSubmit)="crearInscripcion()">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+            <button type="button" class="btn-close" (click)="cerrarBoton()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idAlumno">
+                    <option value="" disabled selected>Seleccione alumno</option>
+                    <option *ngFor="let a of listaAlumnos" [value]="a.idAlumno">{{ a.nombres }} {{ a.apellidos }}
+                    </option>
+                  </select>
+                  <label>Alumno</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idCurso">
+                    <option value="" disabled selected>Seleccione curso</option>
+                    <option *ngFor="let c of listaCursos" [value]="c.idCurso">{{ c.nombreCurso }}</option>
+                  </select>
+                  <label>Curso</label>
+                </div>
+
+                <!-- Ciclo agregado aquí -->
+                <div class="form-floating mb-3">
+                  <input type="number" formControlName="ciclo" class="form-control" placeholder="Ciclo" min="1" />
+                  <label>Ciclo</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idSalon">
+                    <option value="" disabled selected>Seleccione salón</option>
+                    <option *ngFor="let s of listaSalones" [value]="s.idSalon">{{ s.numeroSalon }}</option>
+                  </select>
+                  <label>Salón</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-select" formControlName="idEstado">
+                    <option value="" disabled selected>Seleccione estado</option>
+                    <option *ngFor="let e of listaEstados" [value]="e.idEstado">{{ e.descripcionEstado }}</option>
+                  </select>
+                  <label>Estado</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cerrarBoton()">Cerrar</button>
+            <button type="submit" class="btn btn-primary">{{ nameBoton }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
